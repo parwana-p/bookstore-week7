@@ -22,3 +22,10 @@ def test_add_and_list_reviews():
     r = client.get("/reviews/1")
     assert r.status_code == 200
     assert "Great read" in r.json()
+
+
+def test_search_books_sql_injection_returns_nothing():
+    """A classic injection payload must be treated as a literal search string."""
+    r = client.get("/books", params={"q": "' OR '1'='1"})
+    assert r.status_code == 200
+    assert r.json() == []

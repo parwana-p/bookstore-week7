@@ -96,10 +96,11 @@ class SummarizeIn(BaseModel):
 
 @app.get("/books")
 def search_books(q: str = ""):
-    # VULN: SQL injection — user input concatenated straight into the query
-    query = f"SELECT id, title, author FROM books WHERE title LIKE '%{q}%'"
+    # FIXED (SAST): parameterized query; user input is bound as data, never as SQL
     with closing(get_db()) as conn:
-        rows = conn.execute(query).fetchall()
+        rows = conn.execute(
+            "SELECT id, title, author FROM books WHERE title LIKE ?", (f"%{q}%",)
+        ).fetchall()
     return [dict(r) for r in rows]
 
 
