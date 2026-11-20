@@ -23,7 +23,7 @@ import sqlite3
 from contextlib import closing
 from pathlib import Path
 
-import requests  # intentionally an outdated pin; see requirements.txt
+import requests
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
